@@ -6,39 +6,39 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 
 public class FileManager {
 
     public static void main(String[] args) {
         FileManager fm = new FileManager();
-        fm.buildUser(new Account("Ataul", "Noor", 15));
+        fm.saveUserState(new Account("Ataul", "Noor", 13));
+        System.out.println(fm.retrieveUserState(13).getDetails());
     }
 
-    public void buildUser(Account a){
+    public void saveUserState(Account a) {
         File f = new File("src/main/resources/userStats/" + a.id + ".json");
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-            } catch (IOException ioE) {
-                ioE.printStackTrace();
-            }
-        } else {
+        if (f.exists()) {
             f.delete();
-            try {
-                f.createNewFile();
-            } catch (IOException ioE) {
-                ioE.printStackTrace();
-            }
         }
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        Gson gson = gsonBuilder.create();
         try {
-            Files.write(f.toPath(), Collections.singleton(gson.toJson(a)));
+            f.createNewFile();
+            Files.write(f.toPath(), Collections.singleton(new GsonBuilder().setPrettyPrinting().create().toJson(a)));
         } catch (IOException ioE) {
             ioE.printStackTrace();
         }
+    }
+
+    public Account retrieveUserState(int id) {
+        try {
+            File f = new File("src/main/resources/userStats/" + id + ".json");
+            if (f.exists()) {
+                return new Gson().fromJson(Files.readString(Path.of(f.getPath())), Account.class);
+            }
+        } catch (IOException ioE) {
+            ioE.printStackTrace();
+        }
+        return null;
     }
 }

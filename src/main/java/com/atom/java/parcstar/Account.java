@@ -12,4 +12,9 @@ public class Account {
         this.last_name = last_name;
         this.id = id;
     }
+
+    public String getDetails() {
+        return "Name: " + first_name + " " + last_name + "\n" +
+                "ID: " + id;
+    }
 }
