@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Convert byte buffer from web socket into a WAV file (untested)">
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Complete FFT and return result, maybe? untested">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FFTManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FFTManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659446667438</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Complete FFT and return result, maybe? untested">
+      <created>1659451055873</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659451055873</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +143,7 @@
     <MESSAGE value="WEBSOCKEEEETS AAAAAAAAAA" />
     <MESSAGE value="commits before i go zzzzz" />
     <MESSAGE value="Convert byte buffer from web socket into a WAV file (untested)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Convert byte buffer from web socket into a WAV file (untested)" />
+    <MESSAGE value="Complete FFT and return result, maybe? untested" />
+    <option name="LAST_COMMIT_MESSAGE" value="Complete FFT and return result, maybe? untested" />
   </component>
 </project>
