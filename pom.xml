@@ -37,6 +37,11 @@
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.quifft</groupId>
+            <artifactId>quifft</artifactId>
+            <version>0.1.1</version>
+        </dependency>
 
     </dependencies>
 

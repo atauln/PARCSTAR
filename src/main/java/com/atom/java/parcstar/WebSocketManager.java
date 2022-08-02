@@ -5,10 +5,12 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
 public class WebSocketManager extends WebSocketServer {
+    FFTManager fftManager = new FFTManager();
 
     //ALL MESSAGES TO THIS SERVER MUST BE IN .JSON FORMAT
 
@@ -44,7 +46,13 @@ public class WebSocketManager extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, ByteBuffer message) {
         //on audio recieved
-
+        conn.send("Received byte buffer!");
+        try {
+            fftManager.getFFT(fftManager.convertToAudioFile(message));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        conn.send("Completed job!");
     }
 
     @Override
