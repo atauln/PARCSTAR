@@ -1,7 +1,5 @@
 package com.atom.java.parcstar;
 
-import java.util.Date;
-
 public class Account {
     public String first_name, last_name;
     public int id;
