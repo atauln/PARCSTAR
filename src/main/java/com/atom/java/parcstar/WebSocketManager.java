@@ -6,6 +6,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 
 public class WebSocketManager extends WebSocketServer {
 
@@ -38,6 +39,12 @@ public class WebSocketManager extends WebSocketServer {
         if (sr.response_type == "") {
             //do stuff
         }
+    }
+
+    @Override
+    public void onMessage(WebSocket conn, ByteBuffer message) {
+        //on audio recieved
+
     }
 
     @Override
