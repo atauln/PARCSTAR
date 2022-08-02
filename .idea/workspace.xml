@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Added Account.class to JSON file conversion, regardless of parameters">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="storing and receiving user state (Account.class) is now implemented">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FileManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,7 +88,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659226430036</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="storing and receiving user state (Account.class) is now implemented">
+      <created>1659357152555</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659357152555</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -102,6 +112,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commmittt" />
     <MESSAGE value="Added Account.class to JSON file conversion, regardless of parameters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Account.class to JSON file conversion, regardless of parameters" />
+    <MESSAGE value="storing and receiving user state (Account.class) is now implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="storing and receiving user state (Account.class) is now implemented" />
   </component>
 </project>

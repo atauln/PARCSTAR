@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -15,6 +16,8 @@ public class FileManager {
         FileManager fm = new FileManager();
         fm.saveUserState(new Account("Ataul", "Noor", 13));
         System.out.println(fm.retrieveUserState(13).getDetails());
+        WebSocketManager wsm = new WebSocketManager(new InetSocketAddress("localhost", 8887));
+        wsm.run();
     }
 
     public void saveUserState(Account a) {
