@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment=".gitignore updated">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="commit before i zzzzz">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FileManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
@@ -46,9 +45,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/jfftw-1.2.zip" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager">
     <configuration name="FileManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -135,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659457329566</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="commit before i zzzzz">
+      <created>1659495570698</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1659495570698</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -158,6 +165,7 @@
     <MESSAGE value="Convert byte buffer from web socket into a WAV file (untested)" />
     <MESSAGE value="Complete FFT and return result, maybe? untested" />
     <MESSAGE value=".gitignore updated" />
-    <option name="LAST_COMMIT_MESSAGE" value=".gitignore updated" />
+    <MESSAGE value="commit before i zzzzz" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit before i zzzzz" />
   </component>
 </project>

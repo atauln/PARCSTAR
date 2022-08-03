@@ -15,7 +15,7 @@ public class FileManager {
     public static void main(String[] args) {
         FileManager fm = new FileManager();
         fm.saveUserState(new Account("Ata", "Noor", "siratomxvii"));
-        System.out.println(fm.retrieveUserState(13).getDetails());
+        System.out.println(fm.retrieveUserState("siratomxvii").getDetails());
         WebSocketManager wsm = new WebSocketManager(new InetSocketAddress("localhost", 8887));
         wsm.run();
     }
@@ -33,9 +33,9 @@ public class FileManager {
         }
     }
 
-    public Account retrieveUserState(int id) {
+    public Account retrieveUserState(String username) {
         try {
-            File f = new File("src/main/resources/userStats/" + id + ".json");
+            File f = new File("src/main/resources/userStats/" + username + ".json");
             if (f.exists()) {
                 return new Gson().fromJson(Files.readString(Path.of(f.getPath())), Account.class);
             }

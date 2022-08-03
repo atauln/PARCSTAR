@@ -1,31 +1,32 @@
 package com.atom.java.parcstar;
 
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class ConnectionDetails {
-    public String username;
     public InetSocketAddress address;
     public ArrayList<Object[]> srList = new ArrayList<>();
     // [boolean false (client sent) true (server sent), SocketResponse response]
+    public Account account;
 
     public ConnectionDetails(String username, InetSocketAddress address) {
-        this.username = username;
         this.address = address;
+        this.account = new FileManager().retrieveUserState(username);
+        if (account == null) {
+            this.account = new Account(null, null, username);
+            new FileManager().saveUserState(this.account);
+        }
     }
 
     public ConnectionDetails(String username, InetSocketAddress address, ArrayList<Object[]> srList) {
-        this.username = username;
         this.address = address;
         this.srList = srList;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        this.account = new FileManager().retrieveUserState(username);
+        if (account == null) {
+            this.account = new Account(null, null, username);
+            new FileManager().saveUserState(this.account);
+        }
     }
 
     public ArrayList<Object[]> getResponseList() {
@@ -36,7 +37,8 @@ public class ConnectionDetails {
         this.srList = srList;
     }
 
-    public void addResponse(boolean serverSent, SocketResponse sr) {
+    public SocketResponse addResponse(boolean serverSent, SocketResponse sr) {
         srList.add(new Object[] {serverSent, sr});
+        return sr;
     }
 }
