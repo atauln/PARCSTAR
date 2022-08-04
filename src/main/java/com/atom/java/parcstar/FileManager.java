@@ -12,14 +12,6 @@ import java.util.Collections;
 
 public class FileManager {
 
-    public static void main(String[] args) {
-        FileManager fm = new FileManager();
-        fm.saveUserState(new Account("Ata", "Noor", "siratomxvii"));
-        System.out.println(fm.retrieveUserState("siratomxvii").getDetails());
-        WebSocketManager wsm = new WebSocketManager(new InetSocketAddress("localhost", 8887));
-        wsm.run();
-    }
-
     public void saveUserState(Account a) {
         File f = new File("src/main/resources/userStats/" + a.username + ".json");
         if (f.exists()) {

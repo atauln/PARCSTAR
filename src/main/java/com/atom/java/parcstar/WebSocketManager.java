@@ -30,6 +30,19 @@ public class WebSocketManager extends WebSocketServer {
         System.out.println("Client connected at: " + webSocket.getRemoteSocketAddress());
         System.out.println(clientHandshake.getResourceDescriptor());
         connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket.getRemoteSocketAddress()));
+        Thread loopingPing = new Thread() {
+            public void run() {
+                while (webSocket.isOpen()) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    webSocket.sendPing();
+                }
+            }
+        };
+        loopingPing.start();
     }
 
     @Override
@@ -91,6 +104,7 @@ public class WebSocketManager extends WebSocketServer {
         System.out.println("Received pong from: " + conn.getRemoteSocketAddress() + ": " + f.toString());
         sw.stop();
         System.out.println("Time Elapsed:" + sw.getTime() + "ms");
+        //TODO add ping data to chart in ServerDashboard
         sw.reset();
     }
 
