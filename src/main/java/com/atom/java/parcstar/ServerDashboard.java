@@ -7,18 +7,23 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.DefaultXYDataset;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class ServerDashboard extends JFrame {
-    double[][] fftTimeData, webSocketLatencyTimeData = {};
+    double[][] fftTimeData, webSocketLatencyTimeData;
     DefaultXYDataset fftTimes, webSocketLatencyTimes = new DefaultXYDataset();
     ChartPanel fftPanel, wsPanel;
     JFreeChart fftChart, wsChart;
 
     public ServerDashboard() {
         this.setResizable(false);
-        this.setSize(600, 250);
+        this.setSize(600, 500);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setLayout(new GridLayout(2, 1));
+        this.fftTimes = new DefaultXYDataset();
+        this.webSocketLatencyTimes = new DefaultXYDataset();
+        this.setUpDisplay();
     }
 
     public ServerDashboard setUpDisplay() {
@@ -33,26 +38,36 @@ public class ServerDashboard extends JFrame {
         return this;
     }
 
+    public ServerDashboard refreshDisplay() {
+        fftChart = ChartFactory.createXYLineChart("FFT Times", "Job #", "Time (ms)",
+                fftTimes, PlotOrientation.VERTICAL, true, true, false);
+        wsChart = ChartFactory.createXYLineChart("WebSocket Latency", "Time Pinged (s)", "Time (ms)",
+                webSocketLatencyTimes, PlotOrientation.VERTICAL, true, true, false);
+        wsPanel.repaint();
+        fftPanel.repaint();
+        return this;
+    }
+
     public void resetFFTTimes() {
-        double[][] data = {};
+        double[][] data = {{0}, {0}};
         try {
             fftTimes.removeSeries("Times");
         } catch (Exception e) {
             e.printStackTrace();
         }
         fftTimes.addSeries("Times", data);
-        fftTimeData = new double[][]{};
+        fftTimeData = data;
     }
 
     public void resetWebSocketLatencyTimes() {
-        double[][] data = {};
+        double[][] data = {{0}, {0}};
         try {
             webSocketLatencyTimes.removeSeries("Times");
         } catch (Exception e) {
             e.printStackTrace();
         }
         webSocketLatencyTimes.addSeries("Times", data);
-        webSocketLatencyTimeData = new double[][]{};
+        webSocketLatencyTimeData = data;
     }
 
     public void addFFTDataPoints(double[][] values) {
@@ -60,25 +75,34 @@ public class ServerDashboard extends JFrame {
             System.err.println("Please ensure that you are providing only an X and a Y value");
             return;
         }
-        double[][] data = fftTimeData;
-        this.resetFFTTimes();
+        if (fftTimeData == null) {
+            this.resetFFTTimes();
+        }
         ArrayList<ArrayList<Double>> tempData = new ArrayList<>();
         for (int i=0; i<2; i++) {
-            for (int j=0; j<(data[0].length + values[0].length); j++) {
-                if (j < data[0].length) {
-                    tempData.get(i).set(j, data[i][j]);
+            tempData.add(new ArrayList<Double>());
+            for (int j=0; j<(fftTimeData[0].length + values[0].length); j++) {
+                if (j < fftTimeData[0].length) {
+                    tempData.get(i).add(fftTimeData[i][j]);
                 } else {
-                    tempData.get(i).set(j, values[i][j - data[0].length]);
+                    tempData.get(i).add(values[i][j - fftTimeData[0].length]);
                 }
             }
         }
+        this.resetFFTTimes();
         try {
-            fftTimeData = (double[][]) tempData.toArray();
+            fftTimeData = new double[2][tempData.get(0).size()];
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < tempData.get(0).size(); j++) {
+                    fftTimeData[i][j] = tempData.get(i).get(j);
+                }
+            }
             fftTimes.removeSeries("Times");
             fftTimes.addSeries("Times", fftTimeData);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        refreshDisplay();
     }
 
     public void addWSDataPoints(double[][] values) {
@@ -86,24 +110,33 @@ public class ServerDashboard extends JFrame {
             System.err.println("Please ensure that you are providing only an X and a Y value");
             return;
         }
-        double[][] data = webSocketLatencyTimeData;
-        this.resetWebSocketLatencyTimes();
+        if (webSocketLatencyTimeData == null) {
+            this.resetWebSocketLatencyTimes();
+        }
         ArrayList<ArrayList<Double>> tempData = new ArrayList<>();
         for (int i=0; i<2; i++) {
-            for (int j=0; j<(data[0].length + values[0].length); j++) {
-                if (j < data[0].length) {
-                    tempData.get(i).set(j, data[i][j]);
+            tempData.add(new ArrayList<Double>());
+            for (int j=0; j<(webSocketLatencyTimeData[0].length + values[0].length); j++) {
+                if (j < webSocketLatencyTimeData[0].length) {
+                    tempData.get(i).add(webSocketLatencyTimeData[i][j]);
                 } else {
-                    tempData.get(i).set(j, values[i][j - data[0].length]);
+                    tempData.get(i).add(values[i][j - webSocketLatencyTimeData[0].length]);
                 }
             }
         }
+        this.resetWebSocketLatencyTimes();
         try {
-            webSocketLatencyTimeData = (double[][]) tempData.toArray();
+            webSocketLatencyTimeData = new double[2][tempData.get(0).size()];
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < tempData.get(0).size(); j++) {
+                    webSocketLatencyTimeData[i][j] = tempData.get(i).get(j);
+                }
+            }
             webSocketLatencyTimes.removeSeries("Times");
             webSocketLatencyTimes.addSeries("Times", webSocketLatencyTimeData);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        refreshDisplay();
     }
 }

@@ -9,6 +9,8 @@ public class ConnectionDetails {
     public ArrayList<Object[]> srList = new ArrayList<>();
     // [boolean false (client sent) true (server sent), SocketResponse response]
     public Account account;
+    public int pingNum = 0;
+    public DashboardThread dashboardThread;
 
     public ConnectionDetails(String username, InetSocketAddress address) {
         this.address = address;
@@ -40,5 +42,10 @@ public class ConnectionDetails {
     public SocketResponse addResponse(boolean serverSent, SocketResponse sr) {
         srList.add(new Object[] {serverSent, sr});
         return sr;
+    }
+
+    public void startThread() {
+        dashboardThread = new DashboardThread();
+        this.dashboardThread.start();
     }
 }

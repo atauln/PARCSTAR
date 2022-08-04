@@ -10,6 +10,7 @@ public class SocketResponse {
     // 2 = Request to send WAV data
     // 3 = Request to confirm data integrity (include integrity value of current logs)
     // 4 = Request for user account data
+    // 5 = Request to close connection
 
     //100 - 199 are reserved for server
     //100 = Acknowledgement of information

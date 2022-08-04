@@ -8,6 +8,7 @@ import org.java_websocket.framing.PingFrame;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -22,6 +23,7 @@ public class WebSocketManager extends WebSocketServer {
 
     public WebSocketManager(InetSocketAddress address) {
         super(address);
+        sw.reset();
     }
 
     @Override
@@ -30,15 +32,17 @@ public class WebSocketManager extends WebSocketServer {
         System.out.println("Client connected at: " + webSocket.getRemoteSocketAddress());
         System.out.println(clientHandshake.getResourceDescriptor());
         connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket.getRemoteSocketAddress()));
+        connections.get(webSocket.getRemoteSocketAddress()).startThread();
         Thread loopingPing = new Thread() {
             public void run() {
                 while (webSocket.isOpen()) {
+                    webSocket.sendPing();
+                    connections.get(webSocket.getRemoteSocketAddress()).pingNum ++;
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    webSocket.sendPing();
                 }
             }
         };
@@ -68,6 +72,11 @@ public class WebSocketManager extends WebSocketServer {
         }
         cd.addResponse(false, sr);
         int responseCode = sr.response_type;
+        if (responseCode == 5) {
+            webSocket.close();
+            ServerDashboard sd = this.connections.get(webSocket.getRemoteSocketAddress()).dashboardThread.sd;
+            sd.dispatchEvent(new WindowEvent(sd, WindowEvent.WINDOW_CLOSING));
+        }
         if (cd.account.getUsername() == null && sr.response_type != 0) {
             webSocket.send(cd.addResponse(true, new SocketResponse(101)).toString());
             return;
@@ -104,12 +113,14 @@ public class WebSocketManager extends WebSocketServer {
         System.out.println("Received pong from: " + conn.getRemoteSocketAddress() + ": " + f.toString());
         sw.stop();
         System.out.println("Time Elapsed:" + sw.getTime() + "ms");
+        connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd.addWSDataPoints(new double[][] {{connections.get(conn.getRemoteSocketAddress()).pingNum}, {sw.getTime()}});
         //TODO add ping data to chart in ServerDashboard
         sw.reset();
     }
 
     @Override
     public PingFrame onPreparePing(WebSocket conn) {
+        sw.reset();
         sw.start();
         return super.onPreparePing(conn);
     }
