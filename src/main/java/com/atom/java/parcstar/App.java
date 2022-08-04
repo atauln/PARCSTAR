@@ -19,6 +19,4 @@ public class App {
         webSocketThread = new WebSocketThread();
         webSocketThread.start();
     }
-
-
 }

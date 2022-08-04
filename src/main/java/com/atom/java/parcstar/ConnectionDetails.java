@@ -11,7 +11,7 @@ public class ConnectionDetails {
     public ArrayList<Object[]> srList = new ArrayList<>();
     // [boolean false (client sent) true (server sent), SocketResponse response]
     public Account account;
-    public int pingNum = 0;
+    public int pingNum, fftNum = 0;
     public DashboardThread dashboardThread;
 
     public ConnectionDetails(String username, WebSocket ws) {

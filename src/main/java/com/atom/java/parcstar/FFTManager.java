@@ -36,9 +36,7 @@ public class FFTManager {
                     QuiFFT quiFFT = new QuiFFT(f).windowOverlap(.25).numPoints((int) Math.pow(2, 14));
                     result = quiFFT.fullFFT();
                     resultDirectory.put(time, result);
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (UnsupportedAudioFileException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -46,6 +44,11 @@ public class FFTManager {
 
         while (!resultDirectory.containsKey(time)) {
             //just keep looping
+            try {
+                Thread.sleep(25);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         return resultDirectory.get(time);

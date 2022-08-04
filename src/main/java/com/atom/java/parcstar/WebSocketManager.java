@@ -7,6 +7,7 @@ import org.java_websocket.framing.Framedata;
 import org.java_websocket.framing.PingFrame;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.quifft.output.FFTResult;
 
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class WebSocketManager extends WebSocketServer {
         super.onWebsocketPong(conn, f);
         System.out.println("Received pong from: " + conn.getRemoteSocketAddress() + ": " + f.toString());
         long timeElapsed = System.nanoTime() - pastTime;
-        connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd.addWSDataPoints(new double[][] {{connections.get(conn.getRemoteSocketAddress()).pingNum}, {((double) timeElapsed) / 1000000.0}});
+        connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd.addWSDataPoints(new double[][] {{connections.get(conn.getRemoteSocketAddress()).pingNum}, {((double) timeElapsed) / 1_000_000.0}});
     }
 
     @Override
@@ -125,12 +126,18 @@ public class WebSocketManager extends WebSocketServer {
         //on audio received
         conn.send("Received byte buffer!");
         try {
-            fftManager.getFFT(fftManager.convertToAudioFile(message));
+            long startTime = System.nanoTime();
+            FFTResult fftResult = fftManager.getFFT(fftManager.convertToAudioFile(message));
+            ServerDashboard sd = connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd;
+            int v = ++connections.get(conn.getRemoteSocketAddress()).fftNum;
+            sd.addFFTDataPoints(new double[][] {{v}, {(double) (System.nanoTime() - startTime) / 1_000_000.0}});
+
+            //use FFT
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         conn.send("Completed job!");
-        conn.sendPing();
     }
 
     @Override
