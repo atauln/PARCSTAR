@@ -17,13 +17,12 @@ import java.util.HashMap;
 public class WebSocketManager extends WebSocketServer {
     FFTManager fftManager = new FFTManager();
     HashMap<InetSocketAddress, ConnectionDetails> connections = new HashMap<>();
-    StopWatch sw = new StopWatch();
+    Long pastTime;
 
     //ALL MESSAGES TO AND FROM THIS SERVER MUST BE IN .JSON FORMAT
 
     public WebSocketManager(InetSocketAddress address) {
         super(address);
-        sw.reset();
     }
 
     @Override
@@ -31,7 +30,7 @@ public class WebSocketManager extends WebSocketServer {
         webSocket.send("Connection opened!");
         System.out.println("Client connected at: " + webSocket.getRemoteSocketAddress());
         System.out.println(clientHandshake.getResourceDescriptor());
-        connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket.getRemoteSocketAddress()));
+        connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket));
         connections.get(webSocket.getRemoteSocketAddress()).startThread();
         Thread loopingPing = new Thread() {
             public void run() {
@@ -60,7 +59,7 @@ public class WebSocketManager extends WebSocketServer {
         webSocket.send("Message received!");
         ConnectionDetails cd = connections.get(webSocket.getRemoteSocketAddress());
         if (cd == null) {
-            connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket.getRemoteSocketAddress()));
+            connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket));
         }
         SocketResponse sr = null;
         try {
@@ -111,17 +110,13 @@ public class WebSocketManager extends WebSocketServer {
     public void onWebsocketPong(WebSocket conn, Framedata f) {
         super.onWebsocketPong(conn, f);
         System.out.println("Received pong from: " + conn.getRemoteSocketAddress() + ": " + f.toString());
-        sw.stop();
-        System.out.println("Time Elapsed:" + sw.getTime() + "ms");
-        connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd.addWSDataPoints(new double[][] {{connections.get(conn.getRemoteSocketAddress()).pingNum}, {sw.getTime()}});
-        //TODO add ping data to chart in ServerDashboard
-        sw.reset();
+        long timeElapsed = System.nanoTime() - pastTime;
+        connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd.addWSDataPoints(new double[][] {{connections.get(conn.getRemoteSocketAddress()).pingNum}, {((double) timeElapsed) / 1000000.0}});
     }
 
     @Override
     public PingFrame onPreparePing(WebSocket conn) {
-        sw.reset();
-        sw.start();
+        pastTime = System.nanoTime();
         return super.onPreparePing(conn);
     }
 

@@ -1,5 +1,6 @@
 package com.atom.java.parcstar;
 
+import org.java_websocket.WebSocket;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -8,6 +9,9 @@ import org.jfree.data.xy.DefaultXYDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class ServerDashboard extends JFrame {
@@ -15,11 +19,23 @@ public class ServerDashboard extends JFrame {
     DefaultXYDataset fftTimes, webSocketLatencyTimes = new DefaultXYDataset();
     ChartPanel fftPanel, wsPanel;
     JFreeChart fftChart, wsChart;
+    WebSocket ws;
 
-    public ServerDashboard() {
+    public ServerDashboard(WebSocket ws) {
+        this.ws = ws;
         this.setResizable(false);
         this.setSize(600, 500);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
+        WindowListener listener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ws.close(200, "Connection closed by server");
+                super.windowClosing(e);
+            }
+        };
+        this.addWindowListener(listener);
+
         this.setLayout(new GridLayout(2, 1));
         this.fftTimes = new DefaultXYDataset();
         this.webSocketLatencyTimes = new DefaultXYDataset();

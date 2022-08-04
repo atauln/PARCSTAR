@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Basic changes here and there">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/DashboardThread.java" afterDir="false" />
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Dashboard Complete, with full WS Latency viewability&#10;&#10;boy oh boy we did a lot, still need to implement FFT time data into the ServerDashboard, but the DashboardThread is now capable of automatically updating its graphs">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/DashboardThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/DashboardThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/atom/java/parcstar/FileManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/atom/java/parcstar/FileManager.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659576583142</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Dashboard Complete, with full WS Latency viewability&#10;&#10;boy oh boy we did a lot, still need to implement FFT time data into the ServerDashboard, but the DashboardThread is now capable of automatically updating its graphs">
+      <created>1659621333188</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1659621333188</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -198,7 +204,8 @@
     <MESSAGE value="commit before i zzzzz" />
     <MESSAGE value="honestly i dont even remember what I did lol" />
     <MESSAGE value="Basic changes here and there" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic changes here and there" />
+    <MESSAGE value="Dashboard Complete, with full WS Latency viewability&#10;&#10;boy oh boy we did a lot, still need to implement FFT time data into the ServerDashboard, but the DashboardThread is now capable of automatically updating its graphs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dashboard Complete, with full WS Latency viewability&#10;&#10;boy oh boy we did a lot, still need to implement FFT time data into the ServerDashboard, but the DashboardThread is now capable of automatically updating its graphs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

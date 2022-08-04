@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 public class App {
 
     public ServerDashboard sd;
-    public static Thread webSocketThread;
+    public static WebSocketThread webSocketThread;
 
     public static void main(String[] args) {
         new App();
@@ -16,13 +16,7 @@ public class App {
         fm.saveUserState(new Account("Ata", "Noor", "siratomxvii"));
         System.out.println(fm.retrieveUserState("siratomxvii").getDetails());
 
-        webSocketThread = new Thread() {
-            public WebSocketManager wsm;
-            public void run() {
-                wsm = new WebSocketManager(new InetSocketAddress("localhost", 8887));
-                wsm.run();
-            }
-        };
+        webSocketThread = new WebSocketThread();
         webSocketThread.start();
     }
 
