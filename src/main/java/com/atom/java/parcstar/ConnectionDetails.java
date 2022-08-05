@@ -1,8 +1,10 @@
 package com.atom.java.parcstar;
 
 import org.java_websocket.WebSocket;
+import org.quifft.output.FFTResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ConnectionDetails {
     public WebSocket ws;
@@ -12,6 +14,7 @@ public class ConnectionDetails {
     public int pingNum, fftNum = 0;
     public DashboardThread dashboardThread;
     public boolean audioStreamMode = false;
+    public HashMap<Long, FFTResult> ffts = new HashMap<>();
 
     public ConnectionDetails(String username, WebSocket ws) {
         this.ws = ws;

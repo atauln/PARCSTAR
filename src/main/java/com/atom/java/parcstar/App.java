@@ -24,11 +24,15 @@ public class App {
         webSocketThread = new WebSocketThread();
         webSocketThread.start();
 
-        try {
-            wsc = new WSClient( new URI("ws://localhost:8887/ws"));
-            wsc.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        Thread webClientThread = new Thread(() -> {
+            try {
+                wsc = new WSClient( new URI("ws://localhost:8887/ws"));
+                Thread.sleep(1_000);
+                wsc.connect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        webClientThread.start();
     }
 }

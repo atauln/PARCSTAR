@@ -17,6 +17,7 @@ public class SocketResponse {
     //101 = Request to send user authentication details
     //102 = Failed to parse JSON
     //103 = Approve request
+    //104 = Notification to maintain status
 
     public int getResponse_type() {
         return response_type;

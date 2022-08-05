@@ -1,5 +1,6 @@
 package com.atom.java.parcstar;
 
+import org.java_websocket.WebSocket;
 import org.quifft.QuiFFT;
 import org.quifft.output.FFTResult;
 
@@ -9,43 +10,48 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FFTManager {
-    public static ExecutorService service = Executors.newFixedThreadPool(32);
+    public static ExecutorService service = Executors.newFixedThreadPool(16);
     public static HashMap<String, FFTResult> resultDirectory = new HashMap<>();
     public int packetsParsed = 0;
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuuMMdd_HHmmss");
 
-    public File convertToAudioFile(ByteBuffer bb) throws IOException {
-        File f = new File("src/main/resources/audio/" + dtf.format(LocalDateTime.now()) + ".wav");
+    public static File convertToAudioFile(ByteBuffer bb) throws IOException {
+        File f = new File("src/main/resources/audio/" + System.nanoTime() + ".wav");
         Files.write(Path.of(f.getPath()), bb.array());
         return f;
     }
 
-    public FFTResult getFFT(File f) {
-        String time = dtf.format(LocalDateTime.now());
+    public FFTResult getFFT(File f, ConnectionDetails cd) {
+        Long time = System.nanoTime();
+
         service.submit(new Runnable() {
             @Override
             public void run() {
-                FFTResult result = null;
+                cd.ffts.put(time, getFFTResult());
                 try {
-                    QuiFFT quiFFT = new QuiFFT(f).windowOverlap(.25).numPoints((int) Math.pow(2, 14));
-                    result = quiFFT.fullFFT();
-                    resultDirectory.put(time, result);
                     f.delete();
-                    packetsParsed++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                packetsParsed++;
+            }
+
+            public FFTResult getFFTResult() {
+                try {
+                    QuiFFT quiFFT = new QuiFFT(f).windowOverlap(0).numPoints((int) Math.pow(2, 16));
+                    return quiFFT.fullFFT();
                 } catch (UnsupportedAudioFileException | IOException e) {
                     e.printStackTrace();
                 }
+                return null;
             }
         });
 
-        while (!resultDirectory.containsKey(time)) {
+        while (!cd.ffts.containsKey(time)) {
             //just keep looping
             try {
                 Thread.sleep(3);
@@ -54,6 +60,6 @@ public class FFTManager {
             }
         }
 
-        return resultDirectory.get(time);
+        return cd.ffts.get(time);
     }
 }

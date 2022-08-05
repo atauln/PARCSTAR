@@ -33,7 +33,7 @@ public class WSClient extends WebSocketClient {
         Thread sa = new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(15_000);
+                    Thread.sleep(5_000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -41,10 +41,10 @@ public class WSClient extends WebSocketClient {
                     case 1 -> send(new SocketResponse(2).toString());
                     case 2 -> {
                         Thread t = new Thread(() -> {
-                            while (true) {
+                            while (isOpen()) {
                                 try {
                                     ByteArrayOutputStream out = new ByteArrayOutputStream();
-                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream("src/main/resources/test_cut.wav"));
+                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream("src/main/resources/test_cut_80.wav"));
 
                                     int read;
                                     byte[] buff = new byte[1024];
@@ -55,7 +55,7 @@ public class WSClient extends WebSocketClient {
                                     byte[] audioBytes = out.toByteArray();
                                     send(audioBytes);
                                     packetsSent++;
-                                    Thread.sleep(50);
+                                    Thread.sleep(80);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -77,7 +77,7 @@ public class WSClient extends WebSocketClient {
 
     @Override
     public void onError(Exception e) {
-
+        e.printStackTrace();
     }
 
 

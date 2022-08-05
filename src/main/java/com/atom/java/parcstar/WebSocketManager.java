@@ -23,6 +23,7 @@ public class WebSocketManager extends WebSocketServer {
 
     public WebSocketManager(InetSocketAddress address) {
         super(address);
+        this.setConnectionLostTimeout(0);
     }
 
     @Override
@@ -45,11 +46,22 @@ public class WebSocketManager extends WebSocketServer {
             }
         });
         loopingPing.start();
+
+        Thread notificationThread = new Thread(() -> {
+            while (webSocket.isOpen()) {
+                try {
+                    Thread.sleep(60_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                webSocket.send(new SocketResponse(104).toString());
+            }
+        });
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        System.out.println("Connection closed!");
+        System.out.println("Connection closed! Reason: " + s + " Code: " + i);
     }
 
     @Override
@@ -116,20 +128,19 @@ public class WebSocketManager extends WebSocketServer {
         //on audio received
         packetsReceived++;
         try {
-            Thread t = new Thread() {
-                public void run() {
-                    try {
-                        long startTime = System.nanoTime();
-                        FFTResult fftResult = fftManager.getFFT(fftManager.convertToAudioFile(message));
-                        ServerDashboard sd = connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd;
-                        int v = ++connections.get(conn.getRemoteSocketAddress()).fftNum;
-                        sd.addFFTDataPoints(new double[][]{{v}, {(double) (System.nanoTime() - startTime) / 1_000_000.0}});
-                        conn.send(new Gson().toJson(fftResult));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            Thread t = new Thread(() -> {
+                try {
+                    pastTime = System.nanoTime();
+                    FFTResult fftResult = fftManager.getFFT(fftManager.convertToAudioFile(message), connections.get(conn.getRemoteSocketAddress()));
+                    ServerDashboard sd = connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd;
+                    int v = ++connections.get(conn.getRemoteSocketAddress()).fftNum;
+                    sd.addFFTDataPoints(v, (double) (System.nanoTime() - pastTime) / 1_000_000);
+                    conn.send(new Gson().toJson(fftResult));
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            };
+            });
             t.start();
 
             //use FFT

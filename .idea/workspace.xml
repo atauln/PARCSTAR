@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Basic changes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WSClient.java" afterDir="false" />
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="FFT Parsing works, with 0% packet loss. Unfortunately, there is a spike every second or so">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FFTManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FFTManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WSClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WSClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -193,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659629303856</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="FFT Parsing works, with 0% packet loss. Unfortunately, there is a spike every second or so">
+      <created>1659706759183</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1659706759183</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -222,29 +229,38 @@
     <MESSAGE value="Dashboard Complete, with full WS Latency viewability&#10;&#10;boy oh boy we did a lot, still need to implement FFT time data into the ServerDashboard, but the DashboardThread is now capable of automatically updating its graphs" />
     <MESSAGE value="Closing the dashboard now closes the connection altogether" />
     <MESSAGE value="Basic changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic changes" />
+    <MESSAGE value="FFT Parsing works, with 0% packet loss. Unfortunately, there is a spike every second or so" />
+    <option name="LAST_COMMIT_MESSAGE" value="FFT Parsing works, with 0% packet loss. Unfortunately, there is a spike every second or so" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
+        <breakpoint type="java-exception">
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="5" />
         </breakpoint>
-        <breakpoint enabled="true" type="java-exception">
+        <breakpoint type="java-exception">
           <properties class="java.lang.IllegalArgumentException" package="java.lang" />
           <option name="timeStamp" value="11" />
         </breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="org.java_websocket.exceptions.WebsocketNotConnectedException" package="org.java_websocket.exceptions" />
+          <option name="timeStamp" value="12" />
+        </breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="java.net.ConnectException" package="java.net" />
+          <option name="timeStamp" value="13" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <pin-to-top-manager>
-      <pinned-members>
-        <PinnedItemInfo parentTag="com.atom.java.parcstar.DashboardThread" memberName="sd" />
-      </pinned-members>
-    </pin-to-top-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="App.webSocketThread.wsm.packetsReceived" language="JAVA" custom="com.atom.java.parcstar.App" />
+        <watch expression="App.wsc" language="JAVA" custom="com.atom.java.parcstar.App" />
+        <watch expression="App.webSocketThread.wsm.fftManager.packetsParsed" language="JAVA" custom="com.atom.java.parcstar.App" />
+        <watch expression="App.webSocketThread.wsm.fftManager.resultDirectory" language="JAVA" custom="com.atom.java.parcstar.App" />
+        <watch expression="App.webSocketThread.wsm.fftManager" language="JAVA" custom="com.atom.java.parcstar.App" />
+        <watch expression="App.webSocketThread.wsm.connections" language="JAVA" custom="com.atom.java.parcstar.App" />
       </configuration>
     </watches-manager>
   </component>
