@@ -1,7 +1,6 @@
 package com.atom.java.parcstar;
 
 import com.google.gson.Gson;
-import org.apache.commons.lang3.time.StopWatch;
 import org.java_websocket.WebSocket;
 import org.java_websocket.framing.Framedata;
 import org.java_websocket.framing.PingFrame;
@@ -10,7 +9,6 @@ import org.java_websocket.server.WebSocketServer;
 import org.quifft.output.FFTResult;
 
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -19,6 +17,7 @@ public class WebSocketManager extends WebSocketServer {
     FFTManager fftManager = new FFTManager();
     HashMap<InetSocketAddress, ConnectionDetails> connections = new HashMap<>();
     Long pastTime;
+    int packetsReceived = 0;
 
     //ALL MESSAGES TO AND FROM THIS SERVER MUST BE IN .JSON FORMAT
 
@@ -32,20 +31,19 @@ public class WebSocketManager extends WebSocketServer {
         System.out.println("Client connected at: " + webSocket.getRemoteSocketAddress());
         System.out.println(clientHandshake.getResourceDescriptor());
         connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket));
-        connections.get(webSocket.getRemoteSocketAddress()).startThread();
-        Thread loopingPing = new Thread() {
-            public void run() {
-                while (webSocket.isOpen()) {
+        Thread loopingPing = new Thread(() -> {
+            while (webSocket.isOpen()) {
+                if (!connections.get(webSocket.getRemoteSocketAddress()).audioStreamMode) {
                     webSocket.sendPing();
-                    connections.get(webSocket.getRemoteSocketAddress()).pingNum ++;
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                }
+                connections.get(webSocket.getRemoteSocketAddress()).pingNum ++;
+                try {
+                    Thread.sleep(1_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        };
+        });
         loopingPing.start();
     }
 
@@ -62,7 +60,7 @@ public class WebSocketManager extends WebSocketServer {
         if (cd == null) {
             connections.put(webSocket.getRemoteSocketAddress(), new ConnectionDetails(null, webSocket));
         }
-        SocketResponse sr = null;
+        SocketResponse sr;
         try {
             sr = new Gson().fromJson(s, SocketResponse.class);
         } catch (Exception e) {
@@ -82,27 +80,19 @@ public class WebSocketManager extends WebSocketServer {
             return;
         }
         switch (sr.response_type) {
-            case 0: {
+            case 0 -> {
                 cd.account.setUsername(sr.username);
-                break;
+                webSocket.send(new SocketResponse(100).toString());
             }
-            case 1: {
-                System.out.println(cd.account.username + " (" + webSocket.getRemoteSocketAddress() + ") has acknowledged receipt of message.");
-                break;
-            }
-            case 2: {
-                //TODO Request to send WAV data
+            case 1 -> System.out.println(cd.account.username + " (" + webSocket.getRemoteSocketAddress() + ") has acknowledged receipt of message.");
+            case 2 -> {
+                connections.get(webSocket.getRemoteSocketAddress()).audioStreamMode = true;
                 webSocket.send(cd.addResponse(true, new SocketResponse(103)).toString());
-                break;
             }
-            case 3: {
+            case 3 -> {
                 //TODO Confirm data integrity
-                break;
             }
-            case 4: {
-                webSocket.send(cd.account.toString());
-                break;
-            }
+            case 4 -> webSocket.send(cd.account.toString());
         }
 
     }
@@ -118,26 +108,35 @@ public class WebSocketManager extends WebSocketServer {
     @Override
     public PingFrame onPreparePing(WebSocket conn) {
         pastTime = System.nanoTime();
-        return super.onPreparePing(conn);
+        return  !connections.get(conn.getRemoteSocketAddress()).audioStreamMode ? super.onPreparePing(conn) : null;
     }
 
     @Override
     public void onMessage(WebSocket conn, ByteBuffer message) {
         //on audio received
-        conn.send("Received byte buffer!");
+        packetsReceived++;
         try {
-            long startTime = System.nanoTime();
-            FFTResult fftResult = fftManager.getFFT(fftManager.convertToAudioFile(message));
-            ServerDashboard sd = connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd;
-            int v = ++connections.get(conn.getRemoteSocketAddress()).fftNum;
-            sd.addFFTDataPoints(new double[][] {{v}, {(double) (System.nanoTime() - startTime) / 1_000_000.0}});
+            Thread t = new Thread() {
+                public void run() {
+                    try {
+                        long startTime = System.nanoTime();
+                        FFTResult fftResult = fftManager.getFFT(fftManager.convertToAudioFile(message));
+                        ServerDashboard sd = connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd;
+                        int v = ++connections.get(conn.getRemoteSocketAddress()).fftNum;
+                        sd.addFFTDataPoints(new double[][]{{v}, {(double) (System.nanoTime() - startTime) / 1_000_000.0}});
+                        conn.send(new Gson().toJson(fftResult));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            t.start();
 
             //use FFT
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        conn.send("Completed job!");
     }
 
     @Override

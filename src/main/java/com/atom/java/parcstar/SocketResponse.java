@@ -18,6 +18,24 @@ public class SocketResponse {
     //102 = Failed to parse JSON
     //103 = Approve request
 
+    public int getResponse_type() {
+        return response_type;
+    }
+
+    public SocketResponse setResponse_type(int response_type) {
+        this.response_type = response_type;
+        return this;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public SocketResponse setUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
     public String username; // 0
 
     public SocketResponse(int response_type) {

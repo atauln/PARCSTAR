@@ -2,8 +2,6 @@ package com.atom.java.parcstar;
 
 import org.java_websocket.WebSocket;
 
-import java.io.File;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class ConnectionDetails {
@@ -13,9 +11,11 @@ public class ConnectionDetails {
     public Account account;
     public int pingNum, fftNum = 0;
     public DashboardThread dashboardThread;
+    public boolean audioStreamMode = false;
 
     public ConnectionDetails(String username, WebSocket ws) {
         this.ws = ws;
+        this.startThread();
         this.account = new FileManager().retrieveUserState(username);
         if (account == null) {
             this.account = new Account(null, null, username);
@@ -25,6 +25,7 @@ public class ConnectionDetails {
 
     public ConnectionDetails(String username, WebSocket ws, ArrayList<Object[]> srList) {
         this.ws = ws;
+        this.startThread();
         this.srList = srList;
         this.account = new FileManager().retrieveUserState(username);
         if (account == null) {

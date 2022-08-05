@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Closing the dashboard now closes the connection altogether">
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="Basic changes">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WSClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ConnectionDetails.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FFTManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/FFTManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/SocketResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,7 +50,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -183,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659626002403</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Basic changes">
+      <created>1659629303856</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1659629303856</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -211,7 +221,8 @@
     <MESSAGE value="Basic changes here and there" />
     <MESSAGE value="Dashboard Complete, with full WS Latency viewability&#10;&#10;boy oh boy we did a lot, still need to implement FFT time data into the ServerDashboard, but the DashboardThread is now capable of automatically updating its graphs" />
     <MESSAGE value="Closing the dashboard now closes the connection altogether" />
-    <option name="LAST_COMMIT_MESSAGE" value="Closing the dashboard now closes the connection altogether" />
+    <MESSAGE value="Basic changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Basic changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -220,7 +231,21 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="5" />
         </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="11" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="com.atom.java.parcstar.DashboardThread" memberName="sd" />
+      </pinned-members>
+    </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="App.webSocketThread.wsm.packetsReceived" language="JAVA" custom="com.atom.java.parcstar.App" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -16,8 +16,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class FFTManager {
-    public static ExecutorService service = Executors.newFixedThreadPool(8);
+    public static ExecutorService service = Executors.newFixedThreadPool(32);
     public static HashMap<String, FFTResult> resultDirectory = new HashMap<>();
+    public int packetsParsed = 0;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuuMMdd_HHmmss");
 
     public File convertToAudioFile(ByteBuffer bb) throws IOException {
@@ -36,6 +37,8 @@ public class FFTManager {
                     QuiFFT quiFFT = new QuiFFT(f).windowOverlap(.25).numPoints((int) Math.pow(2, 14));
                     result = quiFFT.fullFFT();
                     resultDirectory.put(time, result);
+                    f.delete();
+                    packetsParsed++;
                 } catch (UnsupportedAudioFileException | IOException e) {
                     e.printStackTrace();
                 }
@@ -45,7 +48,7 @@ public class FFTManager {
         while (!resultDirectory.containsKey(time)) {
             //just keep looping
             try {
-                Thread.sleep(25);
+                Thread.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

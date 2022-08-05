@@ -66,13 +66,13 @@ public class ServerDashboard extends JFrame {
 
     public void resetFFTTimes() {
         double[][] data = {{0}, {0}};
-        try {
-            fftTimes.removeSeries("Times");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    fftTimes.removeSeries("Times");
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
         fftTimes.addSeries("Times", data);
-        fftTimeData = data;
+        fftTimeData = new double[][]{{}, {}};
     }
 
     public void resetWebSocketLatencyTimes() {
@@ -83,7 +83,7 @@ public class ServerDashboard extends JFrame {
             e.printStackTrace();
         }
         webSocketLatencyTimes.addSeries("Times", data);
-        webSocketLatencyTimeData = data;
+        webSocketLatencyTimeData = new double[][]{{}, {}};
     }
 
     public void addFFTDataPoints(double[][] values) {
@@ -105,11 +105,15 @@ public class ServerDashboard extends JFrame {
                 }
             }
         }
+        if (tempData.get(0).size() > 100) {
+            tempData.get(0).remove(0);
+            tempData.get(1).remove(0);
+        }
         this.resetFFTTimes();
         try {
             fftTimeData = new double[2][tempData.get(0).size()];
             for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < tempData.get(0).size(); j++) {
+                for (int j = (tempData.get(0).size() > 100 ? tempData.get(0).size() - 100 : 0); j < tempData.get(0).size(); j++) {
                     fftTimeData[i][j] = tempData.get(i).get(j);
                 }
             }
@@ -141,10 +145,14 @@ public class ServerDashboard extends JFrame {
             }
         }
         this.resetWebSocketLatencyTimes();
+        if (tempData.get(0).size() > 100) {
+            tempData.get(0).remove(0);
+            tempData.get(1).remove(0);
+        }
         try {
             webSocketLatencyTimeData = new double[2][tempData.get(0).size()];
             for (int i = 0; i < 2; i++) {
-                for (int j = 0; j < tempData.get(0).size(); j++) {
+                for (int j = (tempData.get(0).size() > 100 ? tempData.get(0).size() - 100 : 0); j < tempData.get(0).size(); j++) {
                     webSocketLatencyTimeData[i][j] = tempData.get(i).get(j);
                 }
             }
