@@ -26,7 +26,7 @@ public class ServerDashboard extends JFrame {
     public ServerDashboard(WebSocket ws) {
         this.ws = ws;
         this.setResizable(false);
-        this.setSize(600, 500);
+        this.setSize(1200, 300);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         WindowListener listener = new WindowAdapter() {
@@ -38,7 +38,8 @@ public class ServerDashboard extends JFrame {
         };
         this.addWindowListener(listener);
 
-        this.setLayout(new GridLayout(2, 1));
+        this.setLayout(new GridLayout(1, 2));
+        this.setTitle(ws.getRemoteSocketAddress().getAddress().toString());
         this.fftTimes = new DefaultXYDataset();
         this.webSocketLatencyTimes = new DefaultXYDataset();
 
