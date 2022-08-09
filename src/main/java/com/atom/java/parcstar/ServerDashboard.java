@@ -6,6 +6,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.DefaultXYDataset;
+import org.quifft.output.FFTResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,20 +14,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ServerDashboard extends JFrame {
     double[][] fftTimeData, webSocketLatencyTimeData = new double[][] {{0}, {0}};
-    DefaultXYDataset fftTimes, webSocketLatencyTimes = new DefaultXYDataset();
-    ChartPanel fftPanel, wsPanel;
-    JFreeChart fftChart, wsChart;
+    DefaultXYDataset fftTimes, webSocketLatencyTimes, fftDisplayTimes = new DefaultXYDataset();
+    ChartPanel fftPanel, wsPanel, fftDPanel;
+    JFreeChart fftChart, wsChart, fftDChart;
     WebSocket ws;
     ArrayList<ArrayList<Double>> fftToAdd = new ArrayList<>();
 
     public ServerDashboard(WebSocket ws) {
         this.ws = ws;
         this.setResizable(false);
-        this.setSize(1200, 300);
+        this.setSize(1200, 600);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         WindowListener listener = new WindowAdapter() {
@@ -38,7 +38,7 @@ public class ServerDashboard extends JFrame {
         };
         this.addWindowListener(listener);
 
-        this.setLayout(new GridLayout(1, 2));
+        this.setLayout(new GridLayout(2, 2));
         this.setTitle(ws.getRemoteSocketAddress().getAddress().toString());
         this.fftTimes = new DefaultXYDataset();
         this.webSocketLatencyTimes = new DefaultXYDataset();
@@ -48,19 +48,28 @@ public class ServerDashboard extends JFrame {
 
         resetFFTTimes(new double[][]{{0.0}, {0.0}});
         resetWebSocketLatencyTimes(new double[][]{{0.0}, {0.0}});
+        resetFFTDisplayChart(new double[][]{{0.0}, {0.0}});
 
         this.setUpDisplay();
     }
 
     public ServerDashboard setUpDisplay() {
+        JLabel label = new JLabel();
+        label.setText("Client: " + ws.getRemoteSocketAddress());
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         fftChart = ChartFactory.createXYLineChart("FFT Times", "Job #", "Time (ms)",
                 fftTimes, PlotOrientation.VERTICAL, true, true, false);
         wsChart = ChartFactory.createXYLineChart("WebSocket Latency", "Time Pinged (s)", "Time (ms)",
                 webSocketLatencyTimes, PlotOrientation.VERTICAL, true, true, false);
+        fftDChart = ChartFactory.createXYLineChart("FFT Monitor", "Note Half Step Deviation from A4", "Amplitude (dB)",
+                fftDisplayTimes, PlotOrientation.VERTICAL, true, true, false);
         fftPanel = new ChartPanel(fftChart);
         wsPanel = new ChartPanel(wsChart);
+        fftDPanel = new ChartPanel(fftDChart);
+        this.getContentPane().add(label);
         this.getContentPane().add(fftPanel);
         this.getContentPane().add(wsPanel);
+        this.getContentPane().add(fftDPanel);
         return this;
     }
 
@@ -69,8 +78,11 @@ public class ServerDashboard extends JFrame {
                 fftTimes, PlotOrientation.VERTICAL, true, true, false);
         wsChart = ChartFactory.createXYLineChart("WebSocket Latency", "Time Pinged (s)", "Time (ms)",
                 webSocketLatencyTimes, PlotOrientation.VERTICAL, true, true, false);
+        fftDChart = ChartFactory.createXYLineChart("FFT Monitor", "Note Half Step Deviation from A4", "Amplitude (dB)",
+                fftDisplayTimes, PlotOrientation.VERTICAL, true, true, false);
         wsPanel.repaint();
         fftPanel.repaint();
+        fftDPanel.repaint();
         return this;
     }
 
@@ -94,10 +106,31 @@ public class ServerDashboard extends JFrame {
         webSocketLatencyTimeData = data;
     }
 
+    public void resetFFTDisplayChart(double[][] data) {
+        try {
+            fftDisplayTimes.removeSeries("Amplitude");
+            fftDisplayTimes.addSeries("Amplitude", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void changeFFTDisplayPoints(FFTResult fftResult) {
+        double[][] data = new double[][]{new double[49], new double[49]};
+        for (int i = -31; i < 18; i++) {
+            data[0][i + 31] = i;
+            double fftFreq = fftResult.frequencyResolution;
+            int index = (int) Math.round(440.0 * Math.pow((Math.pow(2, 1/12)), i) / fftFreq);
+            data[1][i + 31] = fftResult.fftFrames[0].bins[index].amplitude;
+        }
+        resetFFTDisplayChart(data);
+        refreshDisplay();
+    }
+
     public void addFFTDataPoints(double val1, double val2) {
         fftToAdd.get(0).add(val1);
         fftToAdd.get(1).add(val2);
-        if (fftToAdd.get(0).size() >= 3) {
+        if (fftToAdd.get(0).size() >= 6) {
             //Move FFT values that need to be added to a new variable and clear the old one, to make room for more values
             ArrayList<ArrayList<Double>> newValues = fftToAdd;
 

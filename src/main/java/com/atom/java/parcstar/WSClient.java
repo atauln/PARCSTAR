@@ -44,7 +44,7 @@ public class WSClient extends WebSocketClient {
                             while (isOpen()) {
                                 try {
                                     ByteArrayOutputStream out = new ByteArrayOutputStream();
-                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream("src/main/resources/test_cut_80.wav"));
+                                    BufferedInputStream in = new BufferedInputStream(new FileInputStream("src/main/resources/test-cut-80.wav"));
 
                                     int read;
                                     byte[] buff = new byte[1024];

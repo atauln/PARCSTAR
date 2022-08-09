@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="VIIIIBIIIIING&#10;&#10;Next up: Make the server dashboard UI look a bit better.">
+    <list default="true" id="91dff981-4ca6-44aa-a439-0b2b1c7bd5a6" name="Changes" comment="You can now tell which connection is being monitored by a dashboard through the title">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/PARCSTAR_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/ServerDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WSClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WSClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/atom/java/parcstar/WebSocketManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +54,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/jfftw-1.2.zip" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -77,6 +82,17 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -209,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659727777916</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="You can now tell which connection is being monitored by a dashboard through the title">
+      <created>1659752644430</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1659752644430</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -240,7 +263,8 @@
     <MESSAGE value="Basic changes" />
     <MESSAGE value="FFT Parsing works, with 0% packet loss. Unfortunately, there is a spike every second or so" />
     <MESSAGE value="VIIIIBIIIIING&#10;&#10;Next up: Make the server dashboard UI look a bit better." />
-    <option name="LAST_COMMIT_MESSAGE" value="VIIIIBIIIIING&#10;&#10;Next up: Make the server dashboard UI look a bit better." />
+    <MESSAGE value="You can now tell which connection is being monitored by a dashboard through the title" />
+    <option name="LAST_COMMIT_MESSAGE" value="You can now tell which connection is being monitored by a dashboard through the title" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

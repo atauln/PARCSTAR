@@ -135,6 +135,7 @@ public class WebSocketManager extends WebSocketServer {
                     ServerDashboard sd = connections.get(conn.getRemoteSocketAddress()).dashboardThread.sd;
                     int v = ++connections.get(conn.getRemoteSocketAddress()).fftNum;
                     sd.addFFTDataPoints(v, (double) (System.nanoTime() - pastTime) / 1_000_000);
+                    sd.changeFFTDisplayPoints(fftResult);
                     conn.send(new Gson().toJson(fftResult));
                     return;
                 } catch (Exception e) {
